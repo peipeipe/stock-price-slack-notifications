@@ -33,8 +33,8 @@ STOCK_SYMBOLS:
     "market": "東証グロース"
   },
   {
-    "symbol": "6098.T",
-    "name": "リクルート",
+    "symbol": "7974.T",
+    "name": "任天堂",
     "market": "東証プライム"
   }
 ]
@@ -66,7 +66,7 @@ INDEX_SYMBOLS:
 GitHub Secretsで `STOCK_SYMBOLS` と `INDEX_SYMBOLS` を設定
 
 **方法2: コード内設定（パブリック）**
-`src/config.js` で直接設定（環境変数が未設定の場合のデフォルト値）
+`src/config.js` で直接設定（環境変数が未設定の場合のデフォルト値: トヨタ自動車、リクルートHD、日経平均、TOPIX）
 
 ## ローカルテスト
 

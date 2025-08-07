@@ -5,9 +5,14 @@ module.exports = {
     JSON.parse(process.env.STOCK_SYMBOLS) : 
     [
       {
-        symbol: '215A.T',        // タイミー
-        name: 'タイミー',
-        market: '東証グロース'
+        symbol: '7203.T',        // トヨタ自動車
+        name: 'トヨタ自動車',
+        market: '東証プライム'
+      },
+      {
+        symbol: '6098.T',        // リクルートホールディングス
+        name: 'リクルートHD',
+        market: '東証プライム'
       }
     ],
   
