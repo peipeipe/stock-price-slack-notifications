@@ -15,8 +15,42 @@ GitHub Actionsを使用してSlackに株価情報を自動投稿するbotです�
 
 以下のシークレットを設定してください：
 
+**必須設定:**
 - `SLACK_BOT_TOKEN`: SlackボットのOAuthトークン
 - `SLACK_CHANNEL_ID`: 投稿先のSlackチャンネルID
+
+**オプション設定（銘柄をプライベートにしたい場合）:**
+- `STOCK_SYMBOLS`: 監視する株式銘柄（JSON形式）
+- `INDEX_SYMBOLS`: 監視するインデックス（JSON形式）
+
+#### 銘柄設定の例:
+```json
+STOCK_SYMBOLS:
+[
+  {
+    "symbol": "215A.T",
+    "name": "タイミー", 
+    "market": "東証グロース"
+  },
+  {
+    "symbol": "6098.T",
+    "name": "リクルート",
+    "market": "東証プライム"
+  }
+]
+
+INDEX_SYMBOLS:
+[
+  {
+    "symbol": "^N225",
+    "name": "日経平均株価"
+  },
+  {
+    "symbol": "^TPX", 
+    "name": "TOPIX"
+  }
+]
+```
 
 ### 2. Slackアプリの作成
 
@@ -28,7 +62,11 @@ GitHub Actionsを使用してSlackに株価情報を自動投稿するbotです�
 
 ### 3. 株価銘柄の設定
 
-`src/config.js` で監視したい株価銘柄を設定できます。
+**方法1: GitHub Secrets（推奨・プライベート）**
+GitHub Secretsで `STOCK_SYMBOLS` と `INDEX_SYMBOLS` を設定
+
+**方法2: コード内設定（パブリック）**
+`src/config.js` で直接設定（環境変数が未設定の場合のデフォルト値）
 
 ## ローカルテスト
 
