@@ -1,0 +1,27 @@
+{
+  "name": "stock-price-slack-bot",
+  "version": "1.0.0",
+  "description": "GitHub Actions bot to post stock prices to Slack",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@slack/web-api": "^6.10.0",
+    "axios": "^1.6.0",
+    "canvas": "^2.11.2",
+    "chart.js": "^3.9.1",
+    "chartjs-node-canvas": "^4.1.6",
+    "dotenv": "^16.6.1",
+    "sharp": "^0.34.3"
+  },
+  "keywords": [
+    "stock",
+    "slack",
+    "bot",
+    "github-actions"
+  ],
+  "author": "",
+  "license": "MIT"
+}
