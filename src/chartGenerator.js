@@ -7,6 +7,31 @@ class ChartGenerator {
   constructor(width = 800, height = 400) {
     this.width = width;
     this.height = height;
+    
+    // フォント設定の確認（開発/デバッグ用）
+    this.checkFontSupport();
+  }
+
+  /**
+   * フォントサポートの確認（Linux環境での日本語フォント確認）
+   */
+  checkFontSupport() {
+    const os = require('os');
+    const platform = os.platform();
+    
+    console.log(`Platform: ${platform}`);
+    
+    if (platform === 'linux') {
+      console.log('Linux環境での日本語フォント確認');
+      try {
+        const { execSync } = require('child_process');
+        const fontList = execSync('fc-list :lang=ja family', { encoding: 'utf8' });
+        console.log('利用可能な日本語フォント:');
+        console.log(fontList.split('\n').slice(0, 5).join('\n')); // 最初の5個を表示
+      } catch (error) {
+        console.log('フォント確認中にエラー:', error.message);
+      }
+    }
   }
 
   /**
@@ -54,9 +79,15 @@ class ChartGenerator {
         const y = margin.top + (chartHeight / gridCount) * i;
         gridLines.push(`<line x1="${margin.left}" y1="${y}" x2="${margin.left + chartWidth}" y2="${y}"/>`);
         
+              // Y軸ラベル
+      for (let i = 0; i <= gridCount; i++) {
+        const y = margin.top + (chartHeight / gridCount) * i;
+        gridLines.push(`<line x1="${margin.left}" y1="${y}" x2="${margin.left + chartWidth}" y2="${y}"/>`);
+        
         // Y軸ラベル
         const price = maxPrice - (maxPrice - minPrice) * (i / gridCount);
-        gridLines.push(`<text x="${margin.left - 10}" y="${y + 4}" text-anchor="end" font-family="Arial" font-size="11" fill="#374151">¥${Math.round(price).toLocaleString()}</text>`);
+        gridLines.push(`<text x="${margin.left - 10}" y="${y + 4}" text-anchor="end" font-family="'Noto Sans CJK JP', 'Hiragino Sans', Arial, sans-serif" font-size="11" fill="#374151">¥${Math.round(price).toLocaleString()}</text>`);
+      }
       }
       
       // X軸グリッドとラベル
@@ -72,7 +103,7 @@ class ChartGenerator {
         const label = data[dataIndex].date ? 
           data[dataIndex].date.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' }) :
           `Day ${dataIndex + 1}`;
-        xGridLines.push(`<text x="${x}" y="${margin.top + chartHeight + 25}" text-anchor="middle" font-family="Arial" font-size="11" fill="#374151">${label}</text>`);
+        xGridLines.push(`<text x="${x}" y="${margin.top + chartHeight + 25}" text-anchor="middle" font-family="'Noto Sans CJK JP', 'Hiragino Sans', Arial, sans-serif" font-size="11" fill="#374151">${label}</text>`);
       }
       
       // データ線のパス生成
@@ -109,7 +140,7 @@ class ChartGenerator {
           <rect width="${this.width}" height="${this.height}" fill="#FFFFFF"/>
           
           <!-- タイトル -->
-          <text x="${this.width / 2}" y="40" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#1F2937">
+          <text x="${this.width / 2}" y="40" text-anchor="middle" font-family="'Noto Sans CJK JP', 'Hiragino Sans', Arial, sans-serif" font-size="20" font-weight="bold" fill="#1F2937">
             ${title}
           </text>
           
@@ -133,20 +164,30 @@ class ChartGenerator {
           ${circles}
           
           <!-- 変動情報 -->
-          <text x="${this.width - 20}" y="60" text-anchor="end" font-family="Arial" font-size="14" font-weight="bold" fill="${lineColor}">
+          <text x="${this.width - 20}" y="60" text-anchor="end" font-family="'Noto Sans CJK JP', 'Hiragino Sans', Arial, sans-serif" font-size="14" font-weight="bold" fill="${lineColor}">
             ${changeText}
           </text>
           
           <!-- 現在価格 -->
-          <text x="${this.width - 20}" y="80" text-anchor="end" font-family="Arial" font-size="12" fill="#374151">
+          <text x="${this.width - 20}" y="80" text-anchor="end" font-family="'Noto Sans CJK JP', 'Hiragino Sans', Arial, sans-serif" font-size="12" fill="#374151">
             現在価格: ¥${Math.round(lastPrice).toLocaleString()}
           </text>
         </svg>
       `;
       
       console.log('SVGをPNGに変換中...');
-      const buffer = await sharp(Buffer.from(svg))
-        .png()
+      
+      // フォント設定を含むオプション
+      const sharpOptions = {
+        density: 150, // DPIを高く設定してより鮮明に
+        background: { r: 255, g: 255, b: 255, alpha: 1 }, // 白背景を明示的に設定
+      };
+      
+      const buffer = await sharp(Buffer.from(svg), sharpOptions)
+        .png({
+          quality: 95, // PNG品質を高く設定
+          compressionLevel: 6
+        })
         .toBuffer();
       
       console.log(`SVGチャート生成成功: ${title}, サイズ: ${buffer.length} bytes`);
@@ -196,7 +237,7 @@ class ChartGenerator {
         
         return `
           <line x1="${legendX}" y1="${legendY}" x2="${legendX + 20}" y2="${legendY}" stroke="${color}" stroke-width="3"/>
-          <text x="${legendX + 25}" y="${legendY + 4}" font-family="Arial" font-size="12" fill="#374151">
+          <text x="${legendX + 25}" y="${legendY + 4}" font-family="'Noto Sans CJK JP', 'Hiragino Sans', Arial, sans-serif" font-size="12" fill="#374151">
             ${data.symbol || `銘柄${index + 1}`}
           </text>
         `;
@@ -237,7 +278,7 @@ class ChartGenerator {
         gridLines.push(`<line x1="${margin.left}" y1="${y}" x2="${margin.left + chartWidth}" y2="${y}"/>`);
         
         const price = maxPrice - (maxPrice - minPrice) * (i / gridCount);
-        gridLines.push(`<text x="${margin.left - 10}" y="${y + 4}" text-anchor="end" font-family="Arial" font-size="11" fill="#374151">¥${Math.round(price).toLocaleString()}</text>`);
+        gridLines.push(`<text x="${margin.left - 10}" y="${y + 4}" text-anchor="end" font-family="'Noto Sans CJK JP', 'Hiragino Sans', Arial, sans-serif" font-size="11" fill="#374151">¥${Math.round(price).toLocaleString()}</text>`);
       }
       
       const svg = `
@@ -246,7 +287,7 @@ class ChartGenerator {
           <rect width="${this.width}" height="${this.height}" fill="#FFFFFF"/>
           
           <!-- タイトル -->
-          <text x="${this.width / 2}" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#1F2937">
+          <text x="${this.width / 2}" y="30" text-anchor="middle" font-family="'Noto Sans CJK JP', 'Hiragino Sans', Arial, sans-serif" font-size="18" font-weight="bold" fill="#1F2937">
             ${title}
           </text>
           
@@ -268,8 +309,18 @@ class ChartGenerator {
       `;
       
       console.log('比較チャートをPNGに変換中...');
-      const buffer = await sharp(Buffer.from(svg))
-        .png()
+      
+      // フォント設定を含むオプション
+      const sharpOptions = {
+        density: 150, // DPIを高く設定してより鮮明に
+        background: { r: 255, g: 255, b: 255, alpha: 1 }, // 白背景を明示的に設定
+      };
+      
+      const buffer = await sharp(Buffer.from(svg), sharpOptions)
+        .png({
+          quality: 95, // PNG品質を高く設定
+          compressionLevel: 6
+        })
         .toBuffer();
       
       console.log(`SVG比較チャート生成成功: ${title}, サイズ: ${buffer.length} bytes`);
