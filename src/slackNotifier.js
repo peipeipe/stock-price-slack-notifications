@@ -49,8 +49,6 @@ class SlackNotifier {
       });
     }
 
-    message += '\n_定期株価通知bot by GitHub Actions_';
-    
     return message;
   }
 
