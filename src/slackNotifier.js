@@ -113,8 +113,7 @@ class SlackNotifier {
         file: tempFilePath,
         filename: filename,
         title: title,
-        initial_comment: `📊 ${title}`,
-        filetype: 'png'
+        initial_comment: `📊 ${title}`
       });
 
       // 一時ファイルを削除
