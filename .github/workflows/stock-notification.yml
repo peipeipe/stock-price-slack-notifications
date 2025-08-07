@@ -30,4 +30,6 @@ jobs:
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+        STOCK_SYMBOLS: ${{ secrets.STOCK_SYMBOLS }}
+        INDEX_SYMBOLS: ${{ secrets.INDEX_SYMBOLS }}
       run: npm start
