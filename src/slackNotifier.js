@@ -112,8 +112,7 @@ class SlackNotifier {
         channel_id: this.channelId,
         file: tempFilePath,
         filename: filename,
-        title: title,
-        initial_comment: `📊 ${title}`
+        title: title
       });
 
       // 一時ファイルを削除

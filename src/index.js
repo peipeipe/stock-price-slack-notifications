@@ -2,6 +2,7 @@ const StockDataFetcher = require('./stockDataFetcher');
 const ChartGenerator = require('./chartGenerator');
 const SlackNotifier = require('./slackNotifier');
 const config = require('./config');
+const { isMarketClosed, getMarketClosedReason } = require('./marketCalendar');
 
 // .envファイルから環境変数を読み込み
 require('dotenv').config();
@@ -22,6 +23,13 @@ async function main() {
   }
 
   try {
+    // 東京市場休場日の判定（週末・祝日）
+    const reason = getMarketClosedReason();
+    if (reason) {
+      console.log(`[SKIP - NO POST] ${reason}`);
+      return; // 完全に何も投稿しない
+    }
+
     // インスタンスの初期化
     const stockFetcher = new StockDataFetcher();
     const chartGenerator = new ChartGenerator(
