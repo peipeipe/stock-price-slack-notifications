@@ -1,0 +1,33 @@
+name: Extend Workflow Activity
+
+on:
+  schedule:
+    # 毎月1日の午前0時（UTC）に実行（JST 午前9時）
+    - cron: "0 0 1 * *"
+  workflow_dispatch: # 手動実行も可能
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        # actions/checkout@v4では token を明示的に指定
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Git configuration
+      run: |
+        # 念のためpull（Re-run実行時のコンフリクト回避）
+        git pull
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+    
+    - name: Create empty commit to prevent workflow deactivation
+      run: |
+        git commit --allow-empty -m "chore: prevent automatic workflow deactivation" \
+          -m "GitHub Actions automatically disables scheduled workflows after 60 days of repository inactivity." \
+          -m "This empty commit ensures continuous operation of the stock price notification bot." \
+          -m "See: https://docs.github.com/en/actions/managing-workflow-runs/disabling-and-enabling-a-workflow"
+        git push
