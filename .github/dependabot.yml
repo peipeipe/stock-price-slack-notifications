@@ -1,0 +1,79 @@
+version: 2
+updates:
+  # npm依存関係の管理
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"  # 月1回の更新頻度
+      day: "monday"        # 月曜日に実行
+      time: "09:00"        # JST 18:00（UTC 09:00）
+      timezone: "UTC"
+    
+    # レビューアーとアサイニーの設定
+    reviewers:
+      - "peipeipe"
+    assignees:
+      - "peipeipe"
+    
+    # 同時に開くPRの上限
+    open-pull-requests-limit: 5
+    
+    # コミットメッセージのプレフィックス
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    
+    # ラベルの設定
+    labels:
+      - "dependencies"
+      - "security"
+    
+    # 特定の依存関係の無視設定
+    ignore:
+      # バイナリ依存関係のメジャーアップデートは手動で判断
+      - dependency-name: "canvas"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "sharp"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "chartjs-node-canvas"
+        update-types: ["version-update:semver-major"]
+      
+      # Chart.jsも互換性に注意が必要
+      - dependency-name: "chart.js"
+        update-types: ["version-update:semver-major"]
+    
+    # 許可する依存関係のアップデート（セキュリティ重視）
+    allow:
+      # セキュリティアップデートは常に許可
+      - dependency-type: "all"
+        update-type: "security"
+      # パッチとマイナーアップデートは許可
+      - dependency-type: "all"
+        update-type: "patch"
+      - dependency-type: "all"
+        update-type: "minor"
+
+  # GitHub Actions ワークフローの依存関係も管理
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    
+    reviewers:
+      - "peipeipe"
+    assignees:
+      - "peipeipe"
+    
+    open-pull-requests-limit: 3
+    
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    
+    labels:
+      - "github-actions"
+      - "ci/cd"
