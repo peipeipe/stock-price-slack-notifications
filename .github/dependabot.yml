@@ -45,14 +45,8 @@ updates:
     
     # 許可する依存関係のアップデート（セキュリティ重視）
     allow:
-      # セキュリティアップデートは常に許可
+      # すべての依存関係のアップデートを許可（ignoreで制限）
       - dependency-type: "all"
-        update-type: "security"
-      # パッチとマイナーアップデートは許可
-      - dependency-type: "all"
-        update-type: "patch"
-      - dependency-type: "all"
-        update-type: "minor"
 
   # GitHub Actions ワークフローの依存関係も管理
   - package-ecosystem: "github-actions"
