@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@slack/web-api": "^7.13.0",
-    "axios": "^1.13.1",
+    "@slack/web-api": "^7.11.0",
+    "axios": "^1.13.2",
     "canvas": "^2.11.2",
     "chart.js": "^3.9.1",
     "chartjs-node-canvas": "^4.1.6",
