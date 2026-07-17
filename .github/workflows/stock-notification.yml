@@ -2,8 +2,9 @@ name: Stock Price Notification
 
 on:
   schedule:
-    # 毎日15:30 JST (06:30 UTC) に実行
-    - cron: '30 6 * * *'
+    # 毎日15:37 JST (06:37 UTC) に実行
+    # :00/:30 はスケジュール実行が集中しキュー待ちが延びるため、半端な分に設定
+    - cron: '37 6 * * *'
   workflow_dispatch: # 手動実行も可能
 
 jobs:
