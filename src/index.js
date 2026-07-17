@@ -1,11 +1,12 @@
+// config.js はモジュール読み込み時に process.env を評価するため、
+// 他のモジュールより先に .env を読み込む必要がある
+require('dotenv').config();
+
 const StockDataFetcher = require('./stockDataFetcher');
 const ChartGenerator = require('./chartGenerator');
 const SlackNotifier = require('./slackNotifier');
 const config = require('./config');
 const { isMarketClosed, getMarketClosedReason } = require('./marketCalendar');
-
-// .envファイルから環境変数を読み込み
-require('dotenv').config();
 
 /**
  * メイン処理
@@ -24,10 +25,14 @@ async function main() {
 
   try {
     // 東京市場休場日の判定（週末・祝日）
+    // FORCE_RUN=true でローカルテスト時に休場日判定を無視できる
     const reason = getMarketClosedReason();
-    if (reason) {
+    if (reason && process.env.FORCE_RUN !== 'true') {
       console.log(`[SKIP - NO POST] ${reason}`);
       return; // 完全に何も投稿しない
+    }
+    if (reason) {
+      console.log(`[FORCE_RUN] ${reason} - 休場日判定を無視して実行します`);
     }
 
     // インスタンスの初期化

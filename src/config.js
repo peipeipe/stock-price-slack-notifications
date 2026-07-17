@@ -36,10 +36,6 @@ module.exports = {
       {
         symbol: '^N225',         // 日経平均
         name: '日経平均株価'
-      },
-      {
-        symbol: '^TPX',          // TOPIX
-        name: 'TOPIX'
       }
     ],
   
