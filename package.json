@@ -10,7 +10,7 @@
   "dependencies": {
     "@slack/web-api": "^7.11.0",
     "axios": "^1.16.1",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.4.2",
     "japanese-holidays": "^1.0.0",
     "sharp": "^0.34.5"
   },
