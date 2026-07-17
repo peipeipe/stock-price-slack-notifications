@@ -45,13 +45,11 @@ INDEX_SYMBOLS:
   {
     "symbol": "^N225",
     "name": "日経平均株価"
-  },
-  {
-    "symbol": "^TPX", 
-    "name": "TOPIX"
   }
 ]
 ```
+
+> **注意:** TOPIX指数そのものを返すシンボルはYahoo Financeに存在しません。`^TPX` は通貨USD・CBO取引所の無関係な指数なので使用しないでください。TOPIXの値動きが必要な場合は連動ETF（`1306.T` など）で代替してください。
 
 ### 2. Slackアプリの作成
 
@@ -67,7 +65,7 @@ INDEX_SYMBOLS:
 GitHub Secretsで `STOCK_SYMBOLS` と `INDEX_SYMBOLS` を設定
 
 **方法2: コード内設定（パブリック）**
-`src/config.js` で直接設定（環境変数が未設定の場合のデフォルト値: トヨタ自動車、リクルートHD、日経平均、TOPIX）
+`src/config.js` で直接設定（環境変数が未設定の場合のデフォルト値: トヨタ自動車、リクルートHD、日経平均）
 
 ## ローカルテスト
 
@@ -88,21 +86,29 @@ cp .env.example .env
 ```env
 SLACK_BOT_TOKEN=xoxb-your-actual-slack-bot-token
 SLACK_CHANNEL_ID=C1234567890
+
+# 土日・祝日でもテスト実行したい場合（本番では設定しないこと）
+FORCE_RUN=true
+```
+
+テスト時は本番とは別のチャンネルIDを指定し、そのチャンネルにBotを招待してください（`/invite @ボット名`）。招待を忘れるとSlack APIが `not_in_channel` を返します。
+
+### 日本語フォント（Linux/WSL）
+
+チャート内の日本語が豆腐（□）になる場合はフォントをインストールしてください：
+```bash
+sudo apt-get install -y fonts-noto-cjk
 ```
 
 ### テスト実行
 
-環境変数を読み込んでローカル実行：
+`.env` を用意していれば以下だけで実行できます（`src/index.js` が dotenv で読み込みます）：
 ```bash
-# 方法1: exportで環境変数を設定
-export SLACK_BOT_TOKEN='your-bot-token'
-export SLACK_CHANNEL_ID='your-channel-id'
 npm start
+```
 
-# 方法2: .envファイルを使用（dotenvパッケージが必要）
-source .env && npm start
-
-# 方法3: 1回だけの実行
+`.env` を使わず環境変数で直接指定する場合：
+```bash
 SLACK_BOT_TOKEN='your-token' SLACK_CHANNEL_ID='your-channel' npm start
 ```
 
