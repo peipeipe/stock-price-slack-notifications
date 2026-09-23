@@ -12,7 +12,7 @@
     "axios": "^1.18.1",
     "dotenv": "^17.4.2",
     "japanese-holidays": "^1.0.0",
-    "sharp": "^0.34.5"
+    "sharp": "^0.35.3"
   },
   "keywords": [
     "stock",
